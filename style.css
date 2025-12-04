@@ -1,0 +1,236 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Consolas, monospace;
+}
+
+body {
+    background: #0f111a;
+    color: #e6e6e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+.title {
+    color: #4af626;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* --- TERMINAL --- */
+
+.terminal {
+    width: 650px;
+    background: #310427; /* mauve Ubuntu */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(51, 3, 27, 0.8);
+    margin: auto;
+    color: #e6e6e6;
+}
+
+
+/* Header style macOS */
+.terminal-header {
+    background: #2a2f3a;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Style général du header linux */
+.terminal-header.linux-style {
+    background: #222831;
+    color: #eeeeee;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Ubuntu Mono', monospace;
+    font-weight: 600;
+    font-size: 1.1rem;
+    user-select: none;
+}
+
+/* Titre du terminal */
+.terminal-title {
+    font-weight: 700;
+    color: #00ff00;
+}
+
+/* Container boutons */
+.terminal-btns {
+    display: flex;
+    gap: 12px;
+}
+
+/* Boutons ronds */
+.btn {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: default;
+}
+
+.red { background: #e06c75; }
+.yellow { background: #e5c07b; }
+.green { background: #98c379; }
+
+.terminal-body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 8px;    /* très léger padding à gauche */
+    padding-right: 8px;
+    text-align: left;
+    min-height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #6a054d #310427;
+    background: #310427;
+    border-radius: 0 0 10px 10px;
+}
+
+/* Pour Chrome / Edge */
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+.terminal-body::-webkit-scrollbar-thumb {
+    background: #4af626;
+    border-radius: 10px;
+}
+.terminal-body::-webkit-scrollbar-track {
+    background: #1a1d27;
+}
+
+
+.input {
+    outline: none;
+    color: #4af626;
+}
+
+/* Permet que l'utilisateur tape dans le terminal */
+.input:focus {
+    border-bottom: 1px solid #4af626;
+}
+
+
+.subtitle {
+    color: #e6e6e6;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    opacity: 0.85;
+}
+
+.subtitle strong {
+    color: #4af626;
+}
+
+.output {
+    color: #4af626;
+    margin-left: 10px;
+    white-space: pre-wrap;
+}
+.line {
+    color: #4af626;
+    margin-bottom: 4px;
+}
+
+.command-line {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    padding-left: 0;
+}
+
+/* Prompt bien collé */
+.prompt {
+    color: #4af626;
+    margin-right: 6px;
+    user-select: none;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+
+.input {
+    flex-grow: 1;
+    min-height: 22px;
+    padding: 4px 0 4px 0; /* uniquement padding vertical */
+    outline: none;
+    color: #4af626;
+    font-family: 'Ubuntu Mono', monospace;
+    white-space: pre-wrap;
+}
+
+
+.input:hover {
+    background: rgba(74, 246, 38, 0.1);
+}
+
+.output {
+    white-space: pre-wrap;
+    margin-left: 20px;
+    margin-bottom: 6px;
+    color: #4af626;
+}
+
+
+
+
+/* Curseur clignotant
+.input:after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 18px;
+    background: #4af626;
+    margin-left: 2px;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    50.1%, 100% { opacity: 0; }
+}
+
+/* Quand on clique, on voit bien qu'on peut taper 
+.input:hover {
+    opacity: 0.9;
+    cursor: text;
+} */ 
+
+
+
+/* ----- FOOTER ----- */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #0f111a;
+    color: #4af626;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    border-top: 1px solid #4af62655;
+    backdrop-filter: blur(3px);
+}
+
