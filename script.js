@@ -1,15 +1,24 @@
 const terminalBody = document.querySelector(".terminal-body");
 
 const fichiersValides = [
-    "snake.html",
+    "quiz.html",
     "2048.html",
-    "flappy-penguin.html"
+    "flappy-penguin.html",
+    "formulaire.html",
+    "demineur.html",
+    "attrape-linux.html",
+    "visual-Audio.html"
 ];
 
 const datesFichiers = [
     "22/10/2025 14:49",
     "24/09/2025 11:20",
-    "18/08/2025 16:05"
+    "18/04/2025 16:05",
+    "24/09/2023 14:20",
+    "03/06/2025 16:55",
+    "22/10/2025 14:49",
+    "14/09/2022 01:20",
+    "08/04/2025 06:05"
 ];
 
 let historiqueCmd = [];
@@ -125,12 +134,42 @@ Commandes disponibles:
 
 
 function ouvrirFichier(cmd) {
-    const baseName = cmd.slice(2); // nom après ./
-    
+    const baseName = cmd.slice(2).toLowerCase(); // nom après ./
+
     if (baseName === "quiz") {
-        ajouterTexte(`Ouverture de quiz obsolescence/index.html ...`);
+        ajouterTexte(`Ouverture de quiz-odsolescence/index.html ...`);
         setTimeout(() => {
-            window.location.href = "quiz obsolescence/index.html";
+            window.location.href = "quiz-odsolescence/index.html";
+        }, 700);
+    } else if (baseName === "formulaire") {
+        ajouterTexte(`Ouverture de Formulaire/formulaire.html ...`);
+        setTimeout(() => {
+            window.location.href = "Formulaire/formulaire.html";
+        }, 700);
+    } else if (baseName === "flappy-penguin") {
+        ajouterTexte(`Ouverture de flappy-penguin/index.html ...`);
+        setTimeout(() => {
+            window.location.href = "flappy-penguin/index.html";
+        }, 700);
+    } else if (baseName === "demineur") {
+        ajouterTexte(`Ouverture de Demineur/demineur.html ...`);
+        setTimeout(() => {
+            window.location.href = "Demineur/demineur.html";
+        }, 700);
+    } else if (baseName === "attrape-linux") {
+        ajouterTexte(`Ouverture de attrape-linux/index.html ...`);
+        setTimeout(() => {
+            window.location.href = "attrape_objet/index.html";
+        }, 700);
+    } else if (baseName === "2048") {
+        ajouterTexte(`Ouverture de 2048/2048.html ...`);
+        setTimeout(() => {
+            window.location.href = "2048/2048.html";
+        }, 700);
+    } else if (baseName === "visual-audio") {
+        ajouterTexte(`Ouverture de visual-Audio/index.html ...`);
+        setTimeout(() => {
+            window.location.href = "visual-Audio/index.html";
         }, 700);
     } else {
         const filename = baseName + ".html";
@@ -144,6 +183,9 @@ function ouvrirFichier(cmd) {
         }
     }
 }
+
+
+
 
 
 
