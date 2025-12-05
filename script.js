@@ -171,6 +171,11 @@ function ouvrirFichier(cmd) {
         setTimeout(() => {
             window.location.href = "visual-Audio/index.html";
         }, 700);
+    } else if (baseName === "snake") {
+        ajouterTexte(`Ouverture de NdI/snake.php ...`);
+        setTimeout(() => {
+            window.location.href = "NdI/snake.php";
+        }, 700);
     } else {
         const filename = baseName + ".html";
         if (fichiersValides.includes(filename)) {
