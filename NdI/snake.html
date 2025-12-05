@@ -4,34 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>snake</title>
-<style>
-    canvas{
-        border: 2px solid #333;
-        display: block;
-        margin: 0 auto;
-        background-color: #f0f0f0;
-    }
-    body {
-        margin: 0;
-        background-color: #f0f0f0;
-    }
-    #message-deblocage {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 20px;
-        color: #fff;
-        background: rgba(0, 0, 0, 0.8);
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        z-index: 100;
-        line-height: 1.5;
-        font-family: Arial, sans-serif;
-    }
-</style>
+<title>Snake avec conditions de déblocage multiples (Sans flou)</title>
+<link rel="stylesheet" href="snake.css">
 </head>
 <body>
 <canvas width="600" height="600"></canvas>
@@ -66,65 +40,60 @@ let speed = 150;
 let gameOver = false;
 let game;
 
-const loseSound = new Audio('lose.mp3');
+const loseSound = new Audio('lose.mp3'); // Assurez-vous d'avoir ce fichier
 const background = new Image();
-background.src = 'pinguin.webp';
+background.src = 'pinguin.webp'; // Assurez-vous d'avoir ce fichier
 
-// --- LOGIQUE DE VÉRIFICATION ET D'AFFICHAGE (SANS FLOU) ---
+// --- LOGIQUE DE VÉRIFICATION ET D'AFFICHAGE ---
 
 function verifierDeblocage() {
-    // 1. Récupération des scores
-    const scorePrincipal = parseInt(localStorage.getItem(CLE_DEBLOCAGE)) || 0;
-    const score2 = parseInt(localStorage.getItem(CLE_SCORE_2)) || 0;
-    const score3 = parseInt(localStorage.getItem(CLE_SCORE_3)) || 0;
+    // 1. Récupération des scores depuis localStorage
+    const scorePrincipal = parseInt(localStorage.getItem(CLE_DEBLOCAGE)) || 0;
+    const score2 = parseInt(localStorage.getItem(CLE_SCORE_2)) || 0;
+    const score3 = parseInt(localStorage.getItem(CLE_SCORE_3)) || 0;
 
-    // 2. Évaluation des conditions
-    const condition1 = scorePrincipal === VALEUR_EXACTE_DEBLOCAGE;
-    const condition2_3 = score2 > 0 && score3 > 0;
+    // 2. Évaluation des conditions
+    const condition1 = scorePrincipal === VALEUR_EXACTE_DEBLOCAGE;
+    const condition2_3 = score2 > 0 && score3 > 0;
 
-    const deblocageTotal = condition1 && condition2_3;
-    
-    // 3. Gestion de l'affichage (Sans filtres CSS sur le canvas)
-    if (deblocageTotal) {
-        // Débloqué : On cache le message
-        messageDeblocage.style.display = 'none';
-        canvas.style.filter = 'none'; 
-        canvas.style.opacity = 1; 
-        return true;
-    } else {
-        // Verrouillé : On affiche le message uniquement
-        messageDeblocage.style.display = 'block';
-        
-        // **PAS DE FILTRE CSS SUR LE CANVAS**
-        canvas.style.filter = 'none'; 
-        canvas.style.opacity = 1; 
-        
-        // Mise à jour du message pour guider l'utilisateur
-        let messageHTML = "🔓 **Jeu Verrouillé !** 🔒<br>Vous devez remplir les conditions suivantes :<hr>";
-        
-        if (!condition1) {
-            messageHTML += `❌ **Score Principal (${CLE_DEBLOCAGE}) :** Doit être **EXACTEMENT ${VALEUR_EXACTE_DEBLOCAGE}** (Actuel: ${scorePrincipal})<br>`;
-        } else {
-             messageHTML += `✅ **Score Principal :** OK<br>`;
-        }
+    const deblocageTotal = condition1 && condition2_3;
+    
+    // 3. Gestion de l'affichage (Sans filtre CSS sur le canvas)
+    if (deblocageTotal) {
+        messageDeblocage.style.display = 'none';
+        canvas.style.filter = 'none'; 
+        canvas.style.opacity = 1; 
+        return true;
+    } else {
+        messageDeblocage.style.display = 'block';
+        canvas.style.filter = 'none'; 
+        canvas.style.opacity = 1; 
+        
+        // Mise à jour du message
+        let messageHTML = "🔓 **Jeu Verrouillé !** 🔒<br>Vous devez remplir les conditions suivantes :<hr>";
+        
+        if (!condition1) {
+            messageHTML += `❌ **Score Principal (${CLE_DEBLOCAGE}) :** Doit être **EXACTEMENT ${VALEUR_EXACTE_DEBLOCAGE}** (Actuel: ${scorePrincipal})<br>`;
+        } else {
+             messageHTML += `✅ **Score Principal :** OK<br>`;
+        }
 
-        const checkScore = (key, score) => score > 0 ? `✅ **Score ${key} :** OK<br>` : `❌ **Score ${key} :** Doit être > 0 (Actuel: ${score})<br>`;
-        
-        messageHTML += checkScore(CLE_SCORE_2, score2);
-        messageHTML += checkScore(CLE_SCORE_3, score3);
-        
-        messageDeblocage.innerHTML = messageHTML;
-        return false;
-    }
+        const checkScore = (key, score) => score > 0 ? `✅ **Score ${key} :** OK<br>` : `❌ **Score ${key} :** Doit être > 0 (Actuel: ${score})<br>`;
+        
+        messageHTML += checkScore(CLE_SCORE_2, score2);
+        messageHTML += checkScore(CLE_SCORE_3, score3);
+        
+        messageDeblocage.innerHTML = messageHTML;
+        return false;
+    }
 }
 
 
 document.addEventListener("keydown", direction);
 
 function direction(event){
-    // Le jeu est lancé seulement si 'game' est défini ET débloqué
-    if (typeof game === 'undefined' || gameOver || !verifierDeblocage()) return;
-    
+    if (typeof game === 'undefined' || gameOver || !verifierDeblocage()) return;
+    
     let key = event.keyCode;
     if (key == 37 && d != "RIGHT") d = "LEFT";
     else if (key == 38 && d != "DOWN") d = "UP";
@@ -132,8 +101,9 @@ function direction(event){
     else if (key == 40 && d != "UP") d = "DOWN";
 }
 
-// Dessiner rectangle arrondi (inchangé)
+// Fonctions de dessin de base (roundRect, draw, collision)
 function roundRect(x, y, w, h, r, fillColor, strokeColor, lineWidth) {
+    // ...
     ctx.beginPath();
     ctx.moveTo(x+r, y);
     ctx.lineTo(x+w-r, y);
@@ -153,14 +123,11 @@ function roundRect(x, y, w, h, r, fillColor, strokeColor, lineWidth) {
 }
 
 function draw(){
-    // Si le jeu n'est pas lancé, on dessine juste le fond
-    if (typeof game === 'undefined') {
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-        return; 
-    }
-    
-    // --- Logique de jeu (inchangée) ---
-    
+    if (typeof game === 'undefined') {
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        return; 
+    }
+    
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     if(gameOver){
@@ -172,7 +139,7 @@ function draw(){
         ctx.textBaseline = "middle";
         ctx.fillText("PERDU", canvas.width/2, canvas.height/2);
         
-        clearInterval(game);
+        clearInterval(game);
         return;
     }
 
@@ -239,7 +206,6 @@ function draw(){
         }
     }
 
-    // Afficher le score
     let scoreX = 15;
     let scoreY = 25;
     let padding = 8;
@@ -265,7 +231,6 @@ function draw(){
     ctx.fillText(text, scoreX, scoreY - 5);
     ctx.shadowBlur = 0;
 
-    // Accélération
     if(ateFood && speed > 30){
         speed -= 2;
         clearInterval(game);
@@ -279,17 +244,15 @@ function collision(head, array){
 
 // --- INITIALISATION AU CHARGEMENT ---
 window.onload = () => {
-    const estDebloque = verifierDeblocage();
+    const estDebloque = verifierDeblocage();
 
-    // Lancement de la boucle de jeu UNIQUEMENT si débloqué
-    if (estDebloque) {
-        game = setInterval(draw, speed);
-    } 
+    if (estDebloque) {
+        game = setInterval(draw, speed);
+    } 
 
-    // Appel initial pour afficher le fond (même si le jeu n'est pas lancé)
-    background.onload = () => {
-        draw(); 
-    };
+    background.onload = () => {
+        draw(); 
+    };
 }
 </script>
 </body>
