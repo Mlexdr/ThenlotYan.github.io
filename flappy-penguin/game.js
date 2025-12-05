@@ -335,3 +335,16 @@ function draw() {
 }
 
 setInterval(gameLoop, 20);
+
+
+const CLE_DEBLOCAGE = 'jeu_precedent_termine';
+
+
+if (score.curr === 7) {
+    localStorage.setItem(CLE_DEBLOCAGE, '7');
+    console.log(`Déblocage principal enregistré : ${score.curr}`);
+} else {
+    // Si le score n'est pas 7, on retire la clé pour assurer le verrouillage
+    localStorage.removeItem(CLE_DEBLOCAGE);
+    console.log(`Score ${score.curr} invalide pour le déblocage.`);
+}

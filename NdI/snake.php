@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snake avec conditions de déblocage multiples</title>
+<title>snake</title>
 <style>
     canvas{
         border: 2px solid #333;
@@ -44,7 +44,6 @@ const VALEUR_EXACTE_DEBLOCAGE = 13;
 // Clés des scores secondaires
 const CLE_SCORE_2 = 'score_jeu_2';
 const CLE_SCORE_3 = 'score_jeu_3';
-const CLE_SCORE_4 = 'score_jeu_4';
 // ------------------------------
 
 const canvas = document.querySelector("canvas");
@@ -65,40 +64,41 @@ let borderWidth = 2;
 
 let speed = 150;
 let gameOver = false;
-let game; // Variable pour l'intervalle du jeu
+let game;
 
 const loseSound = new Audio('lose.mp3');
 const background = new Image();
 background.src = 'pinguin.webp';
 
-// --- LOGIQUE DE VÉRIFICATION ET D'AFFICHAGE ---
+// --- LOGIQUE DE VÉRIFICATION ET D'AFFICHAGE (SANS FLOU) ---
 
 function verifierDeblocage() {
     // 1. Récupération des scores
     const scorePrincipal = parseInt(localStorage.getItem(CLE_DEBLOCAGE)) || 0;
     const score2 = parseInt(localStorage.getItem(CLE_SCORE_2)) || 0;
     const score3 = parseInt(localStorage.getItem(CLE_SCORE_3)) || 0;
-    const score4 = parseInt(localStorage.getItem(CLE_SCORE_4)) || 0;
 
     // 2. Évaluation des conditions
     const condition1 = scorePrincipal === VALEUR_EXACTE_DEBLOCAGE;
-    const condition2_3_4 = score2 > 0 && score3 > 0 && score4 > 0;
+    const condition2_3 = score2 > 0 && score3 > 0;
 
-    const deblocageTotal = condition1 && condition2_3_4;
+    const deblocageTotal = condition1 && condition2_3;
     
-    // 3. Gestion de l'affichage (Verrouillé ou Débloqué)
+    // 3. Gestion de l'affichage (Sans filtres CSS sur le canvas)
     if (deblocageTotal) {
-        // Débloqué : On cache le message et on retire les filtres
+        // Débloqué : On cache le message
         messageDeblocage.style.display = 'none';
-        canvas.style.filter = 'none';
-        canvas.style.opacity = 1;
+        canvas.style.filter = 'none'; 
+        canvas.style.opacity = 1; 
         return true;
     } else {
-        // Verrouillé : On affiche le message et on applique les filtres
+        // Verrouillé : On affiche le message uniquement
         messageDeblocage.style.display = 'block';
-        canvas.style.filter = 'blur(5px) grayscale(100%)';
-        canvas.style.opacity = 0.5;
-
+        
+        // **PAS DE FILTRE CSS SUR LE CANVAS**
+        canvas.style.filter = 'none'; 
+        canvas.style.opacity = 1; 
+        
         // Mise à jour du message pour guider l'utilisateur
         let messageHTML = "🔓 **Jeu Verrouillé !** 🔒<br>Vous devez remplir les conditions suivantes :<hr>";
         
@@ -108,12 +108,10 @@ function verifierDeblocage() {
              messageHTML += `✅ **Score Principal :** OK<br>`;
         }
 
-        // Afficher l'état de chaque score secondaire
         const checkScore = (key, score) => score > 0 ? `✅ **Score ${key} :** OK<br>` : `❌ **Score ${key} :** Doit être > 0 (Actuel: ${score})<br>`;
         
         messageHTML += checkScore(CLE_SCORE_2, score2);
         messageHTML += checkScore(CLE_SCORE_3, score3);
-        messageHTML += checkScore(CLE_SCORE_4, score4);
         
         messageDeblocage.innerHTML = messageHTML;
         return false;
@@ -124,7 +122,7 @@ function verifierDeblocage() {
 document.addEventListener("keydown", direction);
 
 function direction(event){
-    // Empêcher le mouvement si le jeu n'est pas lancé
+    // Le jeu est lancé seulement si 'game' est défini ET débloqué
     if (typeof game === 'undefined' || gameOver || !verifierDeblocage()) return;
     
     let key = event.keyCode;
@@ -155,17 +153,17 @@ function roundRect(x, y, w, h, r, fillColor, strokeColor, lineWidth) {
 }
 
 function draw(){
-    // Si le jeu n'est pas lancé, on dessine juste le fond flouté
+    // Si le jeu n'est pas lancé, on dessine juste le fond
     if (typeof game === 'undefined') {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
         return; 
     }
     
-    // Dessiner l'image de fond
+    // --- Logique de jeu (inchangée) ---
+    
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     if(gameOver){
-        // Afficher "PERDU"
         ctx.fillStyle = "rgba(0,0,0,0.6)";
         ctx.fillRect(0, canvas.height/2 - 50, canvas.width, 100);
         ctx.fillStyle = "red";
@@ -177,7 +175,6 @@ function draw(){
         clearInterval(game);
         return;
     }
-    // ... Reste de la logique de jeu ... (Mouvement, nourriture, dessin du serpent, score, accélération)
 
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
@@ -189,7 +186,6 @@ function draw(){
 
     let ateFood = false;
 
-    // Manger la nourriture
     if(snakeX == food.x && snakeY == food.y){
         score++;
         headScale = 1.5;
@@ -213,13 +209,11 @@ function draw(){
 
     snake.unshift(newHead);
 
-    // Dessiner la nourriture
     ctx.fillStyle = "orange";
     ctx.beginPath();
     ctx.arc(food.x + box/2, food.y + box/2, box/2, 0, Math.PI*2);
     ctx.fill();
 
-    // Dessiner le serpent
     for(let i=0; i<snake.length; i++){
         if(i==0){
             let size = box * headScale;
@@ -285,7 +279,6 @@ function collision(head, array){
 
 // --- INITIALISATION AU CHARGEMENT ---
 window.onload = () => {
-    // Vérifie et met à jour l'affichage (message de déblocage)
     const estDebloque = verifierDeblocage();
 
     // Lancement de la boucle de jeu UNIQUEMENT si débloqué
@@ -293,7 +286,7 @@ window.onload = () => {
         game = setInterval(draw, speed);
     } 
 
-    // Appel initial pour afficher le fond (même si flouté)
+    // Appel initial pour afficher le fond (même si le jeu n'est pas lancé)
     background.onload = () => {
         draw(); 
     };

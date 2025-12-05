@@ -133,3 +133,12 @@ restartBtn.addEventListener("click", () => {
 
     gameOverScreen.style.display = "none";
 });
+
+const CLE_SCORE_2 = 'score_jeu_2';
+
+
+if (score > 0) {
+    // Enregistre une valeur positive pour valider la condition
+    localStorage.setItem(CLE_SCORE_2, score.toString());
+    console.log(`Condition secondaire 2 enregistrée : ${score}`);
+}

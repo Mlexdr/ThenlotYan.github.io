@@ -213,3 +213,9 @@ function winGame(){
     messageDiv.innerText="🎉 Félicitations ! Vous avez atteint l'un des systèmes d'exploitation qui offre le plus de liberté ! 🎉";
 }
 
+const CLE_SCORE_3 = 'score_jeu_3';
+
+if (score > 0) {
+    localStorage.setItem(CLE_SCORE_3, score.toString());
+    console.log(`Condition secondaire 3 enregistrée : ${score}`);
+}
