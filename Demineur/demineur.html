@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>Démineur</title>
+		<meta charset="utf8" />
+		<link rel="stylesheet" href="demineur.css">
+	</head>
+
+	<body>
+		
+		
+		<div>
+			<h1>Démineur</h1>
+			<ul>
+				<li>&Eacute;vite les pommes qui volent tes données</li>
+				<li>L'open source de Linux te protégera avec ton clic droit</li>
+				<li>Clic gauche pour tenter ta chance</li>
+			</ul>
+		</div>
+
+		<div>
+            <label for="difficulties">Difficulté :</label>
+			<select name="Difficulty" id="difficulties">
+                <option value="1" selected>Facile</option>
+                <option value="2">Moyen</option>
+				<option value="3">Expert</option>
+            </select>
+		</div>
+		<div>
+			<input 	type="button" value="Lancer la partie" onClick="changerTerrain()"/>
+			<p id="nombre-pommes"></p>
+			<p id="WIN"></p>
+		</div>
+		
+		<div id="plateau">
+		</div>
+		<script src="demineur.js">
+		</script>
+	</body>
+</html>

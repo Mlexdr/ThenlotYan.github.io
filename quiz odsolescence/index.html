@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Obsolescence Programmée</title>
+    <link rel="stylesheet" href="style_quiz.css"/>
+</head>
+<body>
+    <div id="def"><h2>Qu’est-ce que l'obsolescence programmée ? </h2>
+        <p>L'obsolescence programmée est l'ensemble des techniques destinées à réduire la durée 
+            de vie ou d'utilisation d'un produit pour en favoriser l'achat de nouveaux. </p>
+        <p>Elle a été cité pour la première fois en 1932 par un agent immobilier pour maintenir la demande.</p>
+        <p>L’obsolescence programmée existe sous plusieurs formes, les défauts fonctionnels sont mis en 
+            place sur des composants afin de réduire la durée de vie et qu’ils cessent de fonctionner 
+            après une certaine durée en se détruisant, la péremption planifiée est utilisée sur les logiciels 
+            par l’éditeur qui stoppe le support et les mises à jours ce qui le rend de moins en moins 
+            utilisable et contraint les utilisateurs à acheter une version supérieure dont ils n'ont pas 
+            forcément besoin et enfin la péremption indirecte qui est la plus courante en ce qui concerne 
+            les téléphones, elle consiste en le fait de priver l’utilisateur des composants tels que la 
+            batterie utilisés dans son produit.</p>
+        <button onclick="commencer_test()">Quiz</button>
+         </div>
+
+    
+
+    <div id="q1" class="question">
+        <h2>Vous êtes des pros maintenant. Alors c'est parti pour un petit quiz.</h2>
+        <p><strong>1. Qu’est-ce que l’obsolescence programmée ?</strong></p>
+        <label><input type="radio" name="q1" value="A"> A. Une technique visant à améliorer la durabilité des produits</label><br>
+        <label><input type="radio" name="q1" value="B"> B. L’ensemble des techniques destinées à réduire la durée de vie d’un produit</label><br>
+        <label><input type="radio" name="q1" value="C"> C. Un procédé pour recycler plus efficacement les appareils usés</label><br>
+        <label><input type="radio" name="q1" value="D"> D. Une méthode de réduction du coût de fabrication</label><br>
+        <button onclick="verifier(1, 'B')">Valider</button>
+        <p id="res1"></p>
+        <img src="img/enfant.png" alt="enfant" />
+    </div>
+    
+    
+    <div id="q2" class="question">
+        <p><strong>2. Quand l’obsolescence programmée a-t-elle été mentionnée pour la première fois ?</strong></p>
+        <label><input type="radio" name="q2" value="A"> A. En 1920</label><br>
+        <label><input type="radio" name="q2" value="B"> B. En 1932</label><br>
+        <label><input type="radio" name="q2" value="C"> C. En 1950</label><br>
+        <label><input type="radio" name="q2" value="D"> D. En 1975</label><br>
+        <button onclick="verifier(2, 'B')">Valider</button>
+        <p id="res2"></p>
+        <img src="img/ado.png" alt="ado" />
+    </div>
+
+    <div id="q3" class="question">
+        <p><strong>3. Quel est l’objectif principal de l’obsolescence programmée ?</strong></p>
+        <label><input type="radio" name="q3" value="A"> A. Réduire la pollution</label><br>
+        <label><input type="radio" name="q3" value="B"> B. Favoriser l’achat de produits plus écologiques</label><br>
+        <label><input type="radio" name="q3" value="C"> C. Encourager les consommateurs à acheter de nouveaux produits</label><br>
+        <label><input type="radio" name="q3" value="D"> D. Augmenter la durée de vie des appareils</label><br>
+        <button onclick="verifier(3, 'C')">Valider</button>
+        <p id="res3"></p>
+        <img src="img/jeune_adulte.png" alt="adulte" />
+    </div>
+
+    <div id="q4" class="question">
+        <p><strong>4. Quelle forme d’obsolescence concerne les logiciels dont le support et les mises à jour sont arrêtés ?</strong></p>
+        <label><input type="radio" name="q4" value="A"> A. Obsolescence technique</label><br>
+        <label><input type="radio" name="q4" value="B"> B. Péremption indirecte</label><br>
+        <label><input type="radio" name="q4" value="C"> C. Défauts fonctionnels</label><br>
+        <label><input type="radio" name="q4" value="D"> D. Péremption planifiée</label><br>
+        <button onclick="verifier(4, 'D')">Valider</button>
+        <p id="res4"></p>
+        <img src="img/adulte.png" alt="adulte" />
+    </div>
+
+    <div id="q5" class="question">
+        <p><strong>5. Quelle forme d’obsolescence est fréquente dans les téléphones et consiste à priver l’utilisateur de composants comme la batterie ?</strong></p>
+        <label><input type="radio" name="q5" value="A"> A. Péremption planifiée</label><br>
+        <label><input type="radio" name="q5" value="B"> B. Péremption indirecte</label><br>
+        <label><input type="radio" name="q5" value="C"> C. Défauts fonctionnels</label><br>
+        <label><input type="radio" name="q5" value="D"> D. Obsolescence esthétique</label><br>
+        <button onclick="verifier(5, 'B')">Valider</button>
+        <p id="res5"></p>
+        <img src="img/vieux.png" alt="vieux" />
+        
+    </div>
+
+<script>
+    function commencer_test(){
+        let suivante = document.getElementById('q1');
+        if (suivante) suivante.style.display = "block";
+    }
+    
+    function verifier(num, bonneReponse) {
+        let choix = document.querySelector('input[name="q' + num + '"]:checked');
+        let resultat = document.getElementById('res' + num);
+
+        if (!choix) {
+            resultat.innerHTML = "<span class='incorrect'>Veuillez sélectionner une réponse.</span>";
+            return;
+        }
+
+        if (choix.value === bonneReponse) {
+            if (num===5)
+                resultat.innerHTML = "<span class='correct'>Tu as réussi le quiz ! Bravo tu as surpassé l'obsolescence programmée.</span>";
+            else
+                resultat.innerHTML = "<span class='correct'>Tu as réussi !</span>";
+            // Afficher la question suivante
+            let suivante = document.getElementById('q' + (num + 1));
+            if (suivante) suivante.style.display = "block";
+        } else {
+            resultat.innerHTML = "<span class='incorrect'>Aïe, l'obsolescence t'as ratrappé. Réessaie.</span>";
+        }
+    }
+</script>
+
+</body>
+</html>
